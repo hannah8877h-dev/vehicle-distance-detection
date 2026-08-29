@@ -7,7 +7,7 @@
 [![چارچوب](https://img.shields.io/badge/Framework-XGBoost%20%7C%20SVM%20%7C%20PyTorch-red.svg)]()
 [![وضعیت](https://img.shields.io/badge/Status-پروژه‌ی%20پژوهشی-orange.svg)]()
 
-**📖 [مشاهده‌ی README به زبان انگلیسی](README.md)** | **🌐 [صفحه‌ی وب پروژه](https://your-username.github.io/vehicle-distance-detection/)**
+**📖 [مشاهده‌ی README به زبان انگلیسی](README.md)** | **🌐 [صفحه‌ی وب پروژه](https://hannah8877h-dev.github.io/vehicle-distance-detection/)**
 
 ---
 
@@ -165,7 +165,7 @@ vehicle-distance-detection/
 
 ```bash
 # کلون کردن ریپازیتوری
-git clone https://github.com/your-username/vehicle-distance-detection.git
+git clone https://github.com/hannah8877h-dev/vehicle-distance-detection.git
 cd vehicle-distance-detection
 
 # ساخت محیط مجازی (توصیه می‌شود)
@@ -318,7 +318,7 @@ AUC برابر **۰.۹۶۹** جدایی‌پذیری عالی بین کلاس خ
          A Multi-Class Audio Classification Approach with Safety-Oriented Threshold Tuning},
   author={Shabestani, Hananeh and Zaheri Azam, Setayesh},
   year={2026},
-  howpublished={\\url{https://github.com/your-username/vehicle-distance-detection}},
+  howpublished={\\url{https://github.com/hannah8877h-dev/vehicle-distance-detection}},
   note={Accessed: 2026}
 }
 ```
