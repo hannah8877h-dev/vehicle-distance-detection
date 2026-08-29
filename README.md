@@ -7,7 +7,7 @@
 [![Framework](https://img.shields.io/badge/Framework-XGBoost%20%7C%20SVM%20%7C%20PyTorch-red.svg)]()
 [![Status](https://img.shields.io/badge/Status-Research%20Project-orange.svg)]()
 
-**📚 [Read this README in Persian (فارسی)](README_FA.md)** | **🌐 [View Project Page](https://your-username.github.io/vehicle-distance-detection/)**
+**📚 [Read this README in Persian (فارسی)](README_FA.md)** | **🌐 [View Project Page](https://hannah8877h-dev.github.io/vehicle-distance-detection/)**
 
 ---
 
@@ -180,7 +180,7 @@ vehicle-distance-detection/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/vehicle-distance-detection.git
+git clone https://github.com/hannah8877h-dev/vehicle-distance-detection.git
 cd vehicle-distance-detection
 
 # Create a virtual environment (recommended)
@@ -333,7 +333,7 @@ If you use this code or build upon this work, please cite it as follows:
          A Multi-Class Audio Classification Approach with Safety-Oriented Threshold Tuning},
   author={Shabestani, Hananeh and Zaheri Azam, Setayesh},
   year={2026},
-  howpublished={\\url{https://github.com/your-username/vehicle-distance-detection}},
+  howpublished={\\url{https://github.com/hannah8877h-dev/vehicle-distance-detection}},
   note={Accessed: 2026}
 }
 ```
