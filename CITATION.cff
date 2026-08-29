@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+title: "Acoustic Vehicle Distance Detection for Pedestrian Safety: A Multi-Class Audio Classification Approach with Safety-Oriented Threshold Tuning"
+message: "If you use this software or build upon this work, please cite it using the metadata below."
+type: software
+authors:
+  - given-names: Hananeh
+    family-names: Shabestani
+    role: lead
+  - given-names: Setayesh
+    family-names: Zaheri Azam
+    role: co-author
+repository-code: "https://github.com/your-username/vehicle-distance-detection"
+version: "1.0.0"
+date-released: "2026-08-29"
+license: MIT
+keywords:
+  - audio classification
+  - vehicle distance detection
+  - pedestrian safety
+  - machine learning
+  - XGBoost
+  - SVM
+  - PyTorch
+  - acoustic features
+  - MFCC
+  - threshold tuning
+preferred-citation:
+  type: unpublished
+  title: "Acoustic Vehicle Distance Detection for Pedestrian Safety: A Multi-Class Audio Classification Approach with Safety-Oriented Threshold Tuning"
+  authors:
+    - given-names: Hananeh
+      family-names: Shabestani
+    - given-names: Setayesh
+      family-names: Zaheri Azam
+  year: 2026
+  notes: "Research project. Supervisor: Dr. Moharram Mansourizadeh."
