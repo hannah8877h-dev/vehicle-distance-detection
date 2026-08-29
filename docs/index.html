@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Distance Detection — Project Page</title>
+    <meta name="description" content="Acoustic Vehicle Distance Detection for Pedestrian Safety — A Multi-Class Audio Classification Approach">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           CSS Reset & Base
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Academic Modern Palette */
+            --bg: #fafbfc;
+            --bg-elevated: #ffffff;
+            --bg-subtle: #f3f5f8;
+            --text: #1a1d23;
+            --text-secondary: #5a6372;
+            --text-muted: #8b94a3;
+            --border: #e4e8ee;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --code-bg: #f3f5f8;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --radius-lg: 16px;
+            --max-width: 1080px;
+        }
+
+        [data-lang="fa"] {
+            --font-main: 'Vazirmatn', 'Inter', sans-serif;
+        }
+
+        [data-lang="en"] {
+            --font-main: 'Inter', 'Vazirmatn', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================
+           Language Switcher
+           ============================================ */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 4px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 4px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .lang-switch button {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-switch button.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lang-switch button:not(.active):hover {
+            background: var(--bg-subtle);
+        }
+
+        /* ============================================
+           Hero Section
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+
+        .hero .subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hero-meta a, .hero-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .hero-meta a.primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .hero-meta a.primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        .hero-meta a.secondary {
+            background: var(--bg-elevated);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .hero-meta a.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-meta .meta-item {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* ============================================
+           Section Layout
+           ============================================ */
+        .section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 72px 24px;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-number {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .section h2 {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        .section .section-desc {
+            color: var(--text-secondary);
+            font-size: 17px;
+            max-width: 720px;
+        }
+
+        /* ============================================
+           Stats Grid
+           ============================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card .stat-value.accent { color: var(--accent); }
+        .stat-card .stat-value.danger { color: var(--danger); }
+        .stat-card .stat-value.success { color: var(--success); }
+
+        .stat-card .stat-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           Class Cards
+           ============================================ */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .class-card {
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            border: 2px solid;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .class-card.class-0 { background: #eff6ff; border-color: #93c5fd; }
+        .class-card.class-1 { background: #fef2f2; border-color: #fca5a5; }
+        .class-card.class-2 { background: #fffbeb; border-color: #fcd34d; }
+        .class-card.class-3 { background: #f5f3ff; border-color: #c4b5fd; }
+        .class-card.class-4 { background: #f0fdf4; border-color: #86efac; }
+
+        .class-card .class-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .class-card.class-0 .class-num { color: #1e40af; }
+        .class-card.class-1 .class-num { color: #991b1b; }
+        .class-card.class-2 .class-num { color: #92400e; }
+        .class-card.class-3 .class-num { color: #5b21b6; }
+        .class-card.class-4 .class-num { color: #166534; }
+
+        .class-card .class-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .class-card .class-dist {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .class-card .class-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .class-card .danger-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============================================
+           Results Table
+           ============================================ */
+        .table-container {
+            overflow-x: auto;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: var(--bg-subtle);
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-subtle);
+        }
+
+        td .metric {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        td .metric-good { color: var(--success); }
+        td .metric-warn { color: var(--warning); }
+        td .metric-danger { color: var(--danger); }
+        td .metric-na { color: var(--text-muted); }
+
+        td .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-best { background: var(--success-light); color: var(--success); }
+        .badge-safety { background: var(--danger-light); color: var(--danger); }
+        .badge-na { background: var(--bg-subtle); color: var(--text-muted); }
+
+        /* ============================================
+           Feature Cards
+           ============================================ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-card .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card .feature-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .feature-card .feature-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           Image Container
+           ============================================ */
+        .image-block {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-block img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: var(--radius-sm);
+        }
+
+        .image-block .image-caption {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .image-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        /* ============================================
+           Method Steps
+           ============================================ */
+        .method-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            counter-reset: step;
+        }
+
+        .method-step {
+            position: relative;
+            padding: 24px 20px 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .method-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .method-step .step-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+
+        .method-step .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           Info Callout
+           ============================================ */
+        .callout {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 20px 24px;
+            border-radius: var(--radius-sm);
+            margin: 24px 0;
+        }
+
+        .callout.warning {
+            background: var(--warning-light);
+            border-left-color: var(--warning);
+        }
+
+        .callout.danger {
+            background: var(--danger-light);
+            border-left-color: var(--danger);
+        }
+
+        .callout.success {
+            background: var(--success-light);
+            border-left-color: var(--success);
+        }
+
+        .callout .callout-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .callout p {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           Authors Section
+           ============================================ */
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .author-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .author-card .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .author-card .author-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .author-card .author-role {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           Footer
+           ============================================ */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================================
+           RTL Support for Persian
+           ============================================ */
+        [dir="rtl"] .lang-switch {
+            right: auto;
+            left: 20px;
+        }
+
+        [dir="rtl"] th,
+        [dir="rtl"] td {
+            text-align: right;
+        }
+
+        [dir="rtl"] .callout {
+            border-left: none;
+            border-right: 4px solid var(--accent);
+        }
+
+        [dir="rtl"] .callout.warning { border-right-color: var(--warning); }
+        [dir="rtl"] .callout.danger { border-right-color: var(--danger); }
+        [dir="rtl"] .callout.success { border-right-color: var(--success); }
+
+        [dir="rtl"] .method-step::before {
+            left: auto;
+            right: 20px;
+        }
+
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 640px) {
+            .hero { padding: 60px 20px 40px; }
+            .section { padding: 48px 20px; }
+            .hero-meta { flex-direction: column; align-items: center; }
+            .hero-meta a, .hero-meta span { width: 100%; max-width: 280px; justify-content: center; }
+        }
+
+        /* ============================================
+           Hidden language content
+           ============================================ */
+        [data-lang-content] { display: none; }
+        [data-lang-content].active { display: block; }
+
+        [data-lang-content="fa"] { direction: rtl; }
+    </style>
+</head>
+<body data-lang="en">
+
+    <!-- Language Switcher -->
+    <div class="lang-switch">
+        <button onclick="setLang('en')" id="btn-en" class="active">EN</button>
+        <button onclick="setLang('fa')" id="btn-fa">فارسی</button>
+    </div>
+
+    <!-- ============================================
+         ENGLISH CONTENT
+         ============================================ -->
+    <div data-lang-content="en">
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">Research Project · 2026</div>
+            <h1>Acoustic Vehicle Distance Detection<br>for <span class="highlight">Pedestrian Safety</span></h1>
+            <p class="subtitle">A multi-class audio classification system that estimates vehicle proximity from acoustic features, with safety-oriented threshold tuning to maximize detection of approaching vehicles in the danger zone.</p>
+            <div class="hero-meta">
+                <a href="https://github.com/your-username/vehicle-distance-detection" class="primary" target="_blank">📁 View on GitHub</a>
+                <a href="https://github.com/your-username/vehicle-distance-detection/blob/main/notebooks/vehicle_distance_detection.ipynb" class="secondary" target="_blank">📓 Training Notebook</a>
+                <span class="meta-item">MIT License</span>
+                <span class="meta-item">Python · XGBoost · SVM · PyTorch</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Results -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2>Key Results</h2>
+            <p class="section-desc">Performance summary across three model families, evaluated on both validation and unseen test data.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Best Accuracy</div>
+                <div class="stat-value accent">82.8<span style="font-size:20px">%</span></div>
+                <div class="stat-desc">XGBoost (Tuned) on validation set</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Safety Recall (Class 1)</div>
+                <div class="stat-value danger">90.4<span style="font-size:20px">%</span></div>
+                <div class="stat-desc">Danger zone detection rate — target ≥90%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">AUC (Class 1)</div>
+                <div class="stat-value success">0.969</div>
+                <div class="stat-desc">Excellent separability of danger events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Dataset Size</div>
+                <div class="stat-value">6,967</div>
+                <div class="stat-desc">Audio samples across 5 classes</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Class Definitions -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <h2>Class Definitions</h2>
+            <p class="section-desc">The system classifies audio recordings into 5 classes based on the vehicle's distance and direction of travel.</p>
+        </div>
+
+        <div class="classes-grid">
+            <div class="class-card class-0">
+                <div class="class-num">0</div>
+                <div class="class-title">Far — Approaching</div>
+                <div class="class-dist">~50m → 20m</div>
+                <div class="class-desc">Distant vehicle getting closer</div>
+            </div>
+            <div class="class-card class-1">
+                <span class="danger-tag">DANGER</span>
+                <div class="class-num">1</div>
+                <div class="class-title">Danger Zone</div>
+                <div class="class-dist">~20m → 0m</div>
+                <div class="class-desc">Vehicle close and approaching — safety-critical</div>
+            </div>
+            <div class="class-card class-2">
+                <div class="class-num">2</div>
+                <div class="class-title">Near — Receding</div>
+                <div class="class-dist">0m → ~20m</div>
+                <div class="class-desc">Near vehicle moving away</div>
+            </div>
+            <div class="class-card class-3">
+                <div class="class-num">3</div>
+                <div class="class-title">Far — Receding</div>
+                <div class="class-dist">20m → 50m</div>
+                <div class="class-desc">Distant vehicle moving away</div>
+            </div>
+            <div class="class-card class-4">
+                <div class="class-num">4</div>
+                <div class="class-title">Safe</div>
+                <div class="class-dist">—</div>
+                <div class="class-desc">No vehicle present</div>
+            </div>
+        </div>
+
+        <div class="callout danger" style="margin-top: 28px;">
+            <div class="callout-title">⚠️ Why Class 1 matters most</div>
+            <p>A missed detection in Class 1 (danger zone) could cost a pedestrian their life. The threshold tuning strategy deliberately biases the model toward predicting Class 1 whenever there is meaningful probability — accepting more false alarms in exchange for fewer missed dangers.</p>
+        </div>
+    </section>
+
+    <!-- Performance Comparison -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <h2>Model Comparison</h2>
+            <p class="section-desc">Three model families compared on validation and unseen test data, with safety-oriented threshold tuning applied.</p>
+        </div>
+
+        <h3 style="margin-bottom: 16px; font-size: 18px;">Validation Set (20% hold-out)</h3>
+        <div class="table-container" style="margin-bottom: 32px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>Class 1 Recall</th>
+                        <th>Class 1 Precision</th>
+                        <th>AUC</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>XGBoost (Tuned)</strong></td>
+                        <td><span class="metric metric-good">82.8%</span></td>
+                        <td><span class="metric metric-good">90.4%</span></td>
+                        <td><span class="metric">71.7%</span></td>
+                        <td><span class="metric metric-good">0.969</span></td>
+                        <td><span class="badge badge-best">Best Balance</span></td>
+                    </tr>
+                    <tr>
+                        <td>SVM (Tuned)</td>
+                        <td><span class="metric metric-warn">74.5%</span></td>
+                        <td><span class="metric metric-good">97.8%</span></td>
+                        <td><span class="metric metric-warn">54.1%</span></td>
+                        <td><span class="metric metric-na">—</span></td>
+                        <td><span class="badge badge-safety">Max Safety</span></td>
+                    </tr>
+                    <tr>
+                        <td>PyTorch MLP (Tuned)</td>
+                        <td><span class="metric metric-good">81.8%</span></td>
+                        <td><span class="metric metric-good">94.0%</span></td>
+                        <td><span class="metric">70.7%</span></td>
+                        <td><span class="metric metric-na">—</span></td>
+                        <td><span class="badge">DL Baseline</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-bottom: 16px; font-size: 18px;">Unseen Test Set (New Environment)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>Class 1 Recall</th>
+                        <th>True Positives</th>
+                        <th>Missed (FN)</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>XGBoost</strong></td>
+                        <td><span class="metric metric-good">73.7%</span></td>
+                        <td><span class="metric metric-good">78.4%</span></td>
+                        <td><span class="metric">69</span></td>
+                        <td><span class="metric metric-warn">19</span></td>
+                        <td><span class="badge badge-best">Best Generalization</span></td>
+                    </tr>
+                    <tr>
+                        <td>SVM</td>
+                        <td><span class="metric metric-warn">69.8%</span></td>
+                        <td><span class="metric">77.3%</span></td>
+                        <td><span class="metric">68</span></td>
+                        <td><span class="metric metric-warn">20</span></td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>PyTorch MLP</td>
+                        <td colspan="4" style="text-align: center;"><span class="metric-na">N/A — Model load error (torch version mismatch)</span></td>
+                        <td><span class="badge badge-na">N/A</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="image-block">
+            <img src="../images/model_comparison_val_vs_test.png" alt="Model comparison chart">
+            <p class="image-caption">Figure 1: Validation vs. test performance comparison</p>
+        </div>
+
+        <div class="callout">
+            <div class="callout-title">📊 Interpretation</div>
+            <p>The ~9% accuracy drop from validation to the unseen test environment is expected and reflects the domain shift between recording conditions. Despite this, XGBoost maintains a strong Class 1 recall (78.4%) even on unseen data, detecting 69 out of 88 dangerous events. This demonstrates reasonable real-world generalization while highlighting the need for environment-robust features in future iterations.</p>
+        </div>
+    </section>
+
+    <!-- Methodology -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <h2>Methodology</h2>
+            <p class="section-desc">End-to-end pipeline from raw audio to safety-oriented classification.</p>
+        </div>
+
+        <div class="method-steps">
+            <div class="method-step">
+                <div class="step-title">Feature Extraction</div>
+                <div class="step-desc">132 acoustic features per sample: MFCC + Delta + Delta2, spectral features, and Doppler-inspired features.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">Preprocessing</div>
+                <div class="step-desc">Peak normalization, silence trimming (top-db=20), and StandardScaler standardization.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">Model Training</div>
+                <div class="step-desc">Three classifiers: XGBoost (gradient boosting), SVM (RBF kernel), and PyTorch MLP (3-layer).</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">Threshold Tuning</div>
+                <div class="step-desc">Safety-oriented: if P(Class 1) > threshold, force Class 1. Target ≥90% recall on danger class.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">Evaluation</div>
+                <div class="step-desc">Validation, file-level split (no leakage), ablation study, ROC/AUC, learning curve, and unseen test.</div>
+            </div>
+        </div>
+
+        <h3 style="margin: 40px 0 20px; font-size: 18px;">Feature Groups (132 total)</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎵</div>
+                <div class="feature-title">MFCC + Delta + Delta2</div>
+                <div class="feature-count">120 features</div>
+                <div class="feature-desc">Mel-frequency cepstral coefficients and their first/second-order temporal derivatives. Capture timbral characteristics of vehicle sounds.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Spectral Features</div>
+                <div class="feature-count">10 features</div>
+                <div class="feature-desc">Centroid, bandwidth, rolloff, zero-crossing rate, and RMS energy — each with mean and standard deviation.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <div class="feature-title">Doppler-Inspired</div>
+                <div class="feature-count">2 features</div>
+                <div class="feature-desc">Spectral centroid slope over time and centroid diff std. Capture the frequency shift of approaching vehicles.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Results -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">05</span>
+            <h2>Visual Results</h2>
+            <p class="section-desc">Key figures from the experimental analysis.</p>
+        </div>
+
+        <div class="image-block">
+            <img src="../images/roc_curve_class1.png" alt="ROC Curve">
+            <p class="image-caption">Figure 2: ROC curve for Class 1 (Danger) detection — AUC = 0.969</p>
+        </div>
+
+        <div class="image-grid-2">
+            <div class="image-block">
+                <img src="../images/threshold_tuning_analysis.png" alt="Threshold tuning">
+                <p class="image-caption">Figure 3: Threshold tuning analysis — selected threshold 0.25</p>
+            </div>
+            <div class="image-block">
+                <img src="../images/learning_curve.png" alt="Learning curve">
+                <p class="image-caption">Figure 4: Learning curve — model converges by ~50% data</p>
+            </div>
+        </div>
+
+        <div class="image-grid-2">
+            <div class="image-block">
+                <img src="../images/xgboost_confusion_matrix_tuned.png" alt="XGBoost CM">
+                <p class="image-caption">Figure 5: XGBoost confusion matrix (tuned)</p>
+            </div>
+            <div class="image-block">
+                <img src="../images/test_set_confusion_matrices.png" alt="Test set CMs">
+                <p class="image-caption">Figure 6: Test set confusion matrices (unseen environment)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authors -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">06</span>
+            <h2>Authors</h2>
+            <p class="section-desc">Research team and acknowledgments.</p>
+        </div>
+
+        <div class="authors-grid">
+            <div class="author-card">
+                <div class="avatar">ح</div>
+                <div class="author-name">Hananeh Shabestani</div>
+                <div class="author-role">Lead Researcher</div>
+            </div>
+            <div class="author-card">
+                <div class="avatar">س</div>
+                <div class="author-name">Setayesh Zaheri Azam</div>
+                <div class="author-role">Co-Researcher</div>
+            </div>
+        </div>
+
+        <div class="callout success" style="margin-top: 28px;">
+            <div class="callout-title">🎓 Acknowledgments</div>
+            <p>The authors gratefully acknowledge <strong>Dr. Moharram Mansourizadeh</strong> for his valuable guidance, supervision, and insightful feedback throughout this research project. His expertise significantly contributed to the design and refinement of the methodology.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Hananeh Shabestani & Setayesh Zaheri Azam · MIT License</p>
+        <p style="margin-top: 8px;">
+            <a href="https://github.com/your-username/vehicle-distance-detection" target="_blank">GitHub Repository</a> ·
+            <a href="https://github.com/your-username/vehicle-distance-detection/issues" target="_blank">Report Issue</a> ·
+            <a href="mailto:contact@example.com">Contact</a>
+        </p>
+    </footer>
+
+    </div><!-- /English content -->
+
+    <!-- ============================================
+         PERSIAN CONTENT
+         ============================================ -->
+    <div data-lang-content="fa" dir="rtl">
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">پروژه پژوهشی · ۱۴۰۵</div>
+            <h1>تشخیص صوتی فاصله‌ی وسیله نقلیه<br>برای <span class="highlight">امنیت عابران پیاده</span></h1>
+            <p class="subtitle">یک سیستم طبقه‌بندی صوتی چندکلاسه که فاصله‌ی وسیله نقلیه را از ویژگی‌های آکوستیکی تخمین می‌زند، با تنظیم آستانه‌ی امنیت‌محور برای بیشینه‌سازی تشخیص وسایل نقلیه‌ی نزدیک‌شونده در منطقه‌ی خطر.</p>
+            <div class="hero-meta">
+                <a href="https://github.com/your-username/vehicle-distance-detection" class="primary" target="_blank">📁 مشاهده در گیت‌هاب</a>
+                <a href="https://github.com/your-username/vehicle-distance-detection/blob/main/notebooks/vehicle_distance_detection.ipynb" class="secondary" target="_blank">📓 نوت‌بوک آموزش</a>
+                <span class="meta-item">لایسنس MIT</span>
+                <span class="meta-item">پایتون · XGBoost · SVM · PyTorch</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Results -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">۰۱</span>
+            <h2>نتایج کلیدی</h2>
+            <p class="section-desc">خلاصه‌ی عملکرد سه خانواده‌ی مدل، ارزیابی‌شده روی داده‌های اعتبارسنجی و تست جدید.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">بهترین دقت</div>
+                <div class="stat-value accent">۸۲.۸<span style="font-size:20px">٪</span></div>
+                <div class="stat-desc">XGBoost (تیون‌شده) روی مجموعه اعتبارسنجی</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">ریکال امنیتی (کلاس ۱)</div>
+                <div class="stat-value danger">۹۰.۴<span style="font-size:20px">٪</span></div>
+                <div class="stat-desc">نرخ تشخیص منطقه‌ی خطر — هدف ≥۹۰٪</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">AUC (کلاس ۱)</div>
+                <div class="stat-value success">۰.۹۶۹</div>
+                <div class="stat-desc">جدایی‌پذیری عالی رویدادهای خطر</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">حجم دیتاست</div>
+                <div class="stat-value">۶,۹۶۷</div>
+                <div class="stat-desc">نمونه صوتی در ۵ کلاس</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Class Definitions -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">۰۲</span>
+            <h2>تعریف کلاس‌ها</h2>
+            <p class="section-desc">سیستم recordingهای صوتی را به ۵ کلاس بر اساس فاصله و جهت حرکت وسیله نقلیه طبقه‌بندی می‌کند.</p>
+        </div>
+
+        <div class="classes-grid">
+            <div class="class-card class-0">
+                <div class="class-num">۰</div>
+                <div class="class-title">دور — نزدیک‌شونده</div>
+                <div class="class-dist">~۵۰م ← ۲۰م</div>
+                <div class="class-desc">وسیله نقلیه‌ی دور در حال نزدیک شدن</div>
+            </div>
+            <div class="class-card class-1">
+                <span class="danger-tag">خطر</span>
+                <div class="class-num">۱</div>
+                <div class="class-title">منطقه‌ی خطر</div>
+                <div class="class-dist">~۲۰م ← ۰م</div>
+                <div class="class-desc">وسیله نقلیه نزدیک و در حال نزدیک شدن — حساس به امنیت</div>
+            </div>
+            <div class="class-card class-2">
+                <div class="class-num">۲</div>
+                <div class="class-title">نزدیک — دورشونده</div>
+                <div class="class-dist">۰م ← ~۲۰م</div>
+                <div class="class-desc">وسیله نقلیه‌ی نزدیک در حال دور شدن</div>
+            </div>
+            <div class="class-card class-3">
+                <div class="class-num">۳</div>
+                <div class="class-title">دور — دورشونده</div>
+                <div class="class-dist">۲۰م ← ۵۰م</div>
+                <div class="class-desc">وسیله نقلیه‌ی دور در حال دور شدن</div>
+            </div>
+            <div class="class-card class-4">
+                <div class="class-num">۴</div>
+                <div class="class-title">ایمن</div>
+                <div class="class-dist">—</div>
+                <div class="class-desc">عدم وجود وسیله نقلیه</div>
+            </div>
+        </div>
+
+        <div class="callout danger" style="margin-top: 28px;">
+            <div class="callout-title">⚠️ چرا کلاس ۱ مهم‌ترین است</div>
+            <p>یک تشخیص از دست رفته در کلاس ۱ (منطقه‌ی خطر) می‌تواند جان یک عابر پیاده را هزینه کند. استراتژی تنظیم آستانه عمداً مدل را به‌سمت پیش‌بینی کلاس ۱ هرگاه احتمال معناداری وجود دارد متمایل می‌کند — هشدارهای کاذب بیشتری را در ازای خطرات از دست رفته‌ی کمتر می‌پذیرد.</p>
+        </div>
+    </section>
+
+    <!-- Performance Comparison -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">۰۳</span>
+            <h2>مقایسه‌ی مدل‌ها</h2>
+            <p class="section-desc">سه خانواده‌ی مدل روی داده‌های اعتبارسنجی و تست جدید مقایسه شده‌اند، با تنظیم آستانه‌ی امنیت‌محور.</p>
+        </div>
+
+        <h3 style="margin-bottom: 16px; font-size: 18px;">مجموعه اعتبارسنجی (۲۰٪ نگه‌داشته‌شده)</h3>
+        <div class="table-container" style="margin-bottom: 32px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>مدل</th>
+                        <th>دقت</th>
+                        <th>ریکال کلاس ۱</th>
+                        <th>دقت کلاس ۱</th>
+                        <th>AUC</th>
+                        <th>یادداشت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>XGBoost (تیون‌شده)</strong></td>
+                        <td><span class="metric metric-good">۸۲.۸٪</span></td>
+                        <td><span class="metric metric-good">۹۰.۴٪</span></td>
+                        <td><span class="metric">۷۱.۷٪</span></td>
+                        <td><span class="metric metric-good">۰.۹۶۹</span></td>
+                        <td><span class="badge badge-best">بهترین تعادل</span></td>
+                    </tr>
+                    <tr>
+                        <td>SVM (تیون‌شده)</td>
+                        <td><span class="metric metric-warn">۷۴.۵٪</span></td>
+                        <td><span class="metric metric-good">۹۷.۸٪</span></td>
+                        <td><span class="metric metric-warn">۵۴.۱٪</span></td>
+                        <td><span class="metric metric-na">—</span></td>
+                        <td><span class="badge badge-safety">بیشترین امنیت</span></td>
+                    </tr>
+                    <tr>
+                        <td>PyTorch MLP (تیون‌شده)</td>
+                        <td><span class="metric metric-good">۸۱.۸٪</span></td>
+                        <td><span class="metric metric-good">۹۴.۰٪</span></td>
+                        <td><span class="metric">۷۰.۷٪</span></td>
+                        <td><span class="metric metric-na">—</span></td>
+                        <td><span class="badge">پایه‌ی DL</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-bottom: 16px; font-size: 18px;">مجموعه تست (محیط جدید)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>مدل</th>
+                        <th>دقت</th>
+                        <th>ریکال کلاس ۱</th>
+                        <th>تشخیص درست (TP)</th>
+                        <th>از دست رفته (FN)</th>
+                        <th>یادداشت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>XGBoost</strong></td>
+                        <td><span class="metric metric-good">۷۳.۷٪</span></td>
+                        <td><span class="metric metric-good">۷۸.۴٪</span></td>
+                        <td><span class="metric">۶۹</span></td>
+                        <td><span class="metric metric-warn">۱۹</span></td>
+                        <td><span class="badge badge-best">بهترین تعمیم</span></td>
+                    </tr>
+                    <tr>
+                        <td>SVM</td>
+                        <td><span class="metric metric-warn">۶۹.۸٪</span></td>
+                        <td><span class="metric">۷۷.۳٪</span></td>
+                        <td><span class="metric">۶۸</span></td>
+                        <td><span class="metric metric-warn">۲۰</span></td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>PyTorch MLP</td>
+                        <td colspan="4" style="text-align: center;"><span class="metric-na">ناموجود — خطای بارگذاری مدل (اختلاف نسخه‌ی torch)</span></td>
+                        <td><span class="badge badge-na">ناموجود</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="image-block">
+            <img src="../images/model_comparison_val_vs_test.png" alt="نمودار مقایسه مدل‌ها">
+            <p class="image-caption">شکل ۱: مقایسه‌ی عملکرد اعتبارسنجی در برابر تست</p>
+        </div>
+
+        <div class="callout">
+            <div class="callout-title">📊 تفسیر</div>
+            <p>افت ~۹ درصدی دقت از اعتبارسنجی به محیط تست جدید کاملاً طبیعی است و بازتاب‌دهنده‌ی تغییر domain بین شرایط ضبط است. با این وجود، XGBoost حتی روی داده‌ی جدید نیز ریکال قوی کلاس ۱ (۷۸.۴٪) را حفظ می‌کند و ۶۹ مورد از ۸۸ رویداد خطرناک را تشخیص می‌دهد. این نشان‌دهنده‌ی تعمیم‌پذیری معقول در دنیای واقعی است.</p>
+        </div>
+    </section>
+
+    <!-- Methodology -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">۰۴</span>
+            <h2>روش‌شناسی</h2>
+            <p class="section-desc">پایپ‌لاین end-to-end از صدای خام تا طبقه‌بندی امنیت‌محور.</p>
+        </div>
+
+        <div class="method-steps">
+            <div class="method-step">
+                <div class="step-title">استخراج ویژگی</div>
+                <div class="step-desc">۱۳۲ ویژگی آکوستیکی در هر نمونه: MFCC + Delta + Delta2، ویژگی‌های طیفی، و ویژگی‌های الهام‌گرفته از داپلر.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">پیش‌پردازش</div>
+                <div class="step-desc">نرمال‌سازی peak، حذف سکوت (top-db=20)، و استانداردسازی با StandardScaler.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">آموزش مدل</div>
+                <div class="step-desc">سه طبقه‌بند: XGBoost (gradient boosting)، SVM (کرنل RBF)، و PyTorch MLP (۳ لایه).</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">تنظیم آستانه</div>
+                <div class="step-desc">امنیت‌محور: اگر P(کلاس ۱) > آستانه، اجباراً کلاس ۱. هدف ریکال ≥۹۰٪ روی کلاس خطر.</div>
+            </div>
+            <div class="method-step">
+                <div class="step-title">ارزیابی</div>
+                <div class="step-desc">اعتبارسنجی، split در سطح فایل (بدون نشت)، ablation، ROC/AUC، منحنی یادگیری، و تست جدید.</div>
+            </div>
+        </div>
+
+        <h3 style="margin: 40px 0 20px; font-size: 18px;">گروه‌های ویژگی (۱۳۲ ویژگی)</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎵</div>
+                <div class="feature-title">MFCC + Delta + Delta2</div>
+                <div class="feature-count">۱۲۰ ویژگی</div>
+                <div class="feature-desc">ضرایب cepstral فرکانس Mel و مشتقات زمانی مرتبه اول و دوم. مشخصه‌های timbral صدای وسیله نقلیه را ثبت می‌کنند.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">ویژگی‌های طیفی</div>
+                <div class="feature-count">۱۰ ویژگی</div>
+                <div class="feature-desc">Centroid، bandwidth، rolloff، zero-crossing rate، و RMS energy — هرکدام با میانگین و انحراف معیار.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <div class="feature-title">الهام‌گرفته از داپلر</div>
+                <div class="feature-count">۲ ویژگی</div>
+                <div class="feature-desc">شیب centroid طیفی در زمان و انحراف معیار تفاضل centroid. شیفت فرکانسی وسایل نزدیک‌شونده را ثبت می‌کنند.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Results -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-number">۰۵</span>
+            <h2>نتایج تصویری</h2>
+            <p class="section-desc">شکل‌های کلیدی از تحلیل آزمایشی.</p>
+        </div>
+
+        <div class="image-block">
+            <img src="../images/roc_curve_class1.png" alt="منحنی ROC">
+            <p class="image-caption">شکل ۲: منحنی ROC برای تشخیص کلاس ۱ (خطر) — AUC = ۰.۹۶۹</p>
+        </div>
+
+        <div class="image-grid-2">
+            <div class="image-block">
+                <img src="../images/threshold_tuning_analysis.png" alt="تحلیل آستانه">
+                <p class="image-caption">شکل ۳: تحلیل تنظیم آستانه — آستانه‌ی انتخابی ۰.۲۵</p>
+            </div>
+            <div class="image-block">
+                <img src="../images/learning_curve.png" alt="منحنی یادگیری">
+                <p class="image-caption">شکل ۴: منحنی یادگیری — همگرایی تا ~۵۰٪ داده</p>
+            </div>
+        </div>
+
+        <div class="image-grid-2">
+            <div class="image-block">
+                <img src="../images/xgboost_confusion_matrix_tuned.png" alt="ماتریس XGBoost">
+                <p class="image-caption">شکل ۵: ماتریس آشفتگی XGBoost (تیون‌شده)</p>
+            </div>
+            <div class="image-block">
+                <img src="../images/test_set_confusion_matrices.png" alt="ماتریس تست">
+                <p class="image-caption">شکل ۶: ماتریس‌های آشفتگی مجموعه تست (محیط جدید)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authors -->
+    <section class="section" style="background: var(--bg-subtle);">
+        <div class="section-header">
+            <span class="section-number">۰۶</span>
+            <h2>نویسندگان</h2>
+            <p class="section-desc">تیم پژوهشی و تشکرها.</p>
+        </div>
+
+        <div class="authors-grid">
+            <div class="author-card">
+                <div class="avatar">ح</div>
+                <div class="author-name">حنانه شبستانی</div>
+                <div class="author-role">پژوهشگر اصلی</div>
+            </div>
+            <div class="author-card">
+                <div class="avatar">س</div>
+                <div class="author-name">ستایش ظاهری اعظم</div>
+                <div class="author-role">پژوهشگر همکار</div>
+            </div>
+        </div>
+
+        <div class="callout success" style="margin-top: 28px;">
+            <div class="callout-title">🎓 تشکر و قدردانی</div>
+            <p>نویسندگان صمیمانه از <strong>دکتر محرم منصوری‌زاده</strong> بابت راهنمایی‌های ارزشمند، نظارت علمی و بازخوردهای دقیق ایشان در طول این پروژه‌ی پژوهشی قدردانی می‌کنند. تخصص ایشان به‌طور چشمگیری در طراحی و اصلاح روش‌شناسی مؤثر بوده است.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© ۱۴۰۵ حنانه شبستانی و ستایش ظاهری اعظم · لایسنس MIT</p>
+        <p style="margin-top: 8px;">
+            <a href="https://github.com/your-username/vehicle-distance-detection" target="_blank">ریپازیتوری گیت‌هاب</a> ·
+            <a href="https://github.com/your-username/vehicle-distance-detection/issues" target="_blank">گزارش مشکل</a> ·
+            <a href="mailto:contact@example.com">تماس</a>
+        </p>
+    </footer>
+
+    </div><!-- /Persian content -->
+
+    <script>
+        function setLang(lang) {
+            // Update body attribute
+            document.body.setAttribute('data-lang', lang);
+
+            // Update direction
+            document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', lang);
+
+            // Toggle content visibility
+            document.querySelectorAll('[data-lang-content]').forEach(el => {
+                el.classList.toggle('active', el.getAttribute('data-lang-content') === lang);
+            });
+
+            // Update buttons
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-fa').classList.toggle('active', lang === 'fa');
+
+            // Save preference
+            try { localStorage.setItem('preferred-lang', lang); } catch(e) {}
+        }
+
+        // Load preference on page load
+        (function() {
+            let savedLang = 'en';
+            try { savedLang = localStorage.getItem('preferred-lang') || 'en'; } catch(e) {}
+            setLang(savedLang);
+        })();
+    </script>
+</body>
+</html>
